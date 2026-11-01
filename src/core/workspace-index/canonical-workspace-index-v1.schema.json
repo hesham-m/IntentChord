@@ -1,0 +1,1490 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://intentchord.local/schemas/canonical-workspace-index-v1.schema.json",
+  "title": "Canonical Workspace Index Contract v1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "contract_type",
+    "contract_version",
+    "contract_id",
+    "contract_status",
+    "workspace",
+    "source_binding",
+    "generation",
+    "snapshot",
+    "delta",
+    "coverage",
+    "failures",
+    "integrity"
+  ],
+  "properties": {
+    "contract_type": {
+      "const": "canonical_workspace_index"
+    },
+    "contract_version": {
+      "const": "1.0.0"
+    },
+    "contract_id": {
+      "$ref": "#/$defs/id"
+    },
+    "contract_status": {
+      "enum": [
+        "COMPLETE",
+        "COMPLETE_WITH_GAPS"
+      ]
+    },
+    "workspace": {
+      "$ref": "#/$defs/workspaceIdentity"
+    },
+    "source_binding": {
+      "$ref": "#/$defs/sourceBinding"
+    },
+    "generation": {
+      "$ref": "#/$defs/generation"
+    },
+    "snapshot": {
+      "$ref": "#/$defs/snapshot"
+    },
+    "delta": {
+      "oneOf": [
+        {
+          "$ref": "#/$defs/delta"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "coverage": {
+      "$ref": "#/$defs/coverage"
+    },
+    "failures": {
+      "type": "array",
+      "items": {
+        "$ref": "#/$defs/failure"
+      }
+    },
+    "integrity": {
+      "$ref": "#/$defs/integrity"
+    }
+  },
+  "$defs": {
+    "id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 160,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]*$"
+    },
+    "sha256": {
+      "type": "string",
+      "pattern": "^sha256:[0-9a-f]{64}$"
+    },
+    "jsonValue": {
+      "oneOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        },
+        {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        }
+      ]
+    },
+    "sourceLocation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "line_range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start",
+            "end"
+          ],
+          "properties": {
+            "start": {
+              "type": "integer",
+              "minimum": 1
+            },
+            "end": {
+              "type": "integer",
+              "minimum": 1
+            }
+          }
+        },
+        "byte_range": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "start",
+            "end"
+          ],
+          "properties": {
+            "start": {
+              "type": "integer",
+              "minimum": 0
+            },
+            "end": {
+              "type": "integer",
+              "minimum": 0
+            }
+          }
+        },
+        "ast_node_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "symbol_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "normalized_signature": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        }
+      },
+      "minProperties": 1
+    },
+    "workspaceIdentity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workspace_instance_id",
+        "workspace_revision_id",
+        "previous_revision_id",
+        "source_binding_id"
+      ],
+      "properties": {
+        "workspace_instance_id": {
+          "$ref": "#/$defs/id"
+        },
+        "workspace_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "previous_revision_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source_binding_id": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "sourceBinding": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "source_binding_id",
+        "binding_type",
+        "normalized_reference",
+        "metadata"
+      ],
+      "properties": {
+        "source_binding_id": {
+          "$ref": "#/$defs/id"
+        },
+        "binding_type": {
+          "enum": [
+            "LOCAL_FILESYSTEM",
+            "REMOTE_REFERENCE",
+            "FIXTURE"
+          ]
+        },
+        "normalized_reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "device_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "platform": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "repository_identity": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "branch": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "commit_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-fA-F]{7,64}$"
+        },
+        "metadata": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        }
+      }
+    },
+    "generation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "indexing_session_id",
+        "indexer_name",
+        "indexer_version",
+        "parser_registry_version",
+        "relation_registry_version",
+        "started_at",
+        "completed_at"
+      ],
+      "properties": {
+        "indexing_session_id": {
+          "$ref": "#/$defs/id"
+        },
+        "indexer_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "indexer_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "parser_registry_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "relation_registry_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "started_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "completed_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "file": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workspace_file_id",
+        "file_revision_id",
+        "relative_path",
+        "file_name",
+        "file_kind",
+        "size_bytes",
+        "content_hash",
+        "metadata_hash",
+        "encoding",
+        "parse_status",
+        "sensitivity_state",
+        "coverage_stage",
+        "coverage_state",
+        "lineage_state"
+      ],
+      "properties": {
+        "workspace_file_id": {
+          "$ref": "#/$defs/id"
+        },
+        "file_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "relative_path": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192,
+          "pattern": "^(?!/)(?!.*\\\\)(?!.*(?:^|/)\\.\\.(?:/|$)).+$"
+        },
+        "file_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 1024
+        },
+        "file_kind": {
+          "enum": [
+            "SOURCE_CODE",
+            "MARKDOWN",
+            "CSV",
+            "JSON",
+            "YAML",
+            "TOML",
+            "XML",
+            "SCRIPT",
+            "MANIFEST",
+            "CONFIGURATION",
+            "BINARY",
+            "UNKNOWN"
+          ]
+        },
+        "language": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "metadata_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "encoding": {
+          "enum": [
+            "UTF8",
+            "UTF16LE",
+            "BINARY",
+            "UNKNOWN"
+          ]
+        },
+        "parse_status": {
+          "enum": [
+            "PARSED",
+            "NOT_APPLICABLE",
+            "METADATA_ONLY",
+            "RESTRICTED",
+            "UNSUPPORTED",
+            "FAILED"
+          ]
+        },
+        "sensitivity_state": {
+          "enum": [
+            "NORMAL",
+            "SENSITIVE",
+            "SECRET",
+            "CREDENTIAL_LIKE",
+            "OWNER_RESTRICTED"
+          ]
+        },
+        "coverage_stage": {
+          "enum": [
+            "DISCOVERED",
+            "METADATA_INDEXED",
+            "CONTENT_READABLE",
+            "STRUCTURE_PARSED",
+            "FACTS_EXTRACTED",
+            "RELATIONS_RESOLVED"
+          ]
+        },
+        "coverage_state": {
+          "enum": [
+            "COMPLETE",
+            "PARTIAL",
+            "METADATA_ONLY",
+            "RESTRICTED",
+            "UNSUPPORTED",
+            "FAILED"
+          ]
+        },
+        "content_ref_id": {
+          "$ref": "#/$defs/id"
+        },
+        "lineage_state": {
+          "enum": [
+            "NEW",
+            "CONTINUED",
+            "RENAMED_OR_MOVED",
+            "UNPROVEN"
+          ]
+        },
+        "previous_file_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "possible_lineage": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "previous_workspace_file_id",
+            "reason",
+            "confidence"
+          ],
+          "properties": {
+            "previous_workspace_file_id": {
+              "$ref": "#/$defs/id"
+            },
+            "reason": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 2048
+            },
+            "confidence": {
+              "enum": [
+                "LOW",
+                "MEDIUM",
+                "HIGH"
+              ]
+            }
+          }
+        }
+      }
+    },
+    "factProvenance": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workspace_revision_id",
+        "file_revision_id",
+        "file_content_hash",
+        "source_location",
+        "extractor_id",
+        "extractor_version",
+        "extraction_method",
+        "evidence_hash"
+      ],
+      "properties": {
+        "workspace_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "file_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "file_content_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "source_location": {
+          "$ref": "#/$defs/sourceLocation"
+        },
+        "extractor_id": {
+          "$ref": "#/$defs/id"
+        },
+        "extractor_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "extraction_method": {
+          "enum": [
+            "PARSER_EXACT",
+            "AST_DERIVED",
+            "MANIFEST_DECLARED",
+            "TEXT_PATTERN",
+            "HEURISTIC",
+            "DOCUMENTED_CLAIM"
+          ]
+        },
+        "evidence_hash": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "fact": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workspace_fact_id",
+        "fact_revision_id",
+        "fact_type",
+        "qualified_name",
+        "display_name",
+        "attributes",
+        "source_file_revision_id",
+        "source_location",
+        "extraction_method",
+        "extractor_id",
+        "extractor_version",
+        "certainty",
+        "evidence_role",
+        "provenance"
+      ],
+      "properties": {
+        "workspace_fact_id": {
+          "$ref": "#/$defs/id"
+        },
+        "fact_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "fact_type": {
+          "enum": [
+            "SYMBOL",
+            "IMPORT",
+            "DEPENDENCY",
+            "ROUTE",
+            "SERVICE",
+            "COMPONENT",
+            "TEST",
+            "CONFIGURATION",
+            "SCRIPT",
+            "DOCUMENTATION",
+            "DATABASE_ENTITY"
+          ]
+        },
+        "qualified_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "display_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2048
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        "source_file_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "source_location": {
+          "$ref": "#/$defs/sourceLocation"
+        },
+        "parent_fact_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "extraction_method": {
+          "enum": [
+            "PARSER_EXACT",
+            "AST_DERIVED",
+            "MANIFEST_DECLARED",
+            "TEXT_PATTERN",
+            "HEURISTIC",
+            "DOCUMENTED_CLAIM"
+          ]
+        },
+        "extractor_id": {
+          "$ref": "#/$defs/id"
+        },
+        "extractor_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "certainty": {
+          "enum": [
+            "EXACT",
+            "DERIVED",
+            "HEURISTIC",
+            "UNRESOLVED"
+          ]
+        },
+        "evidence_role": {
+          "enum": [
+            "CANONICAL_EVIDENCE",
+            "SIGNAL_ONLY",
+            "UNRESOLVED"
+          ]
+        },
+        "provenance": {
+          "$ref": "#/$defs/factProvenance"
+        }
+      }
+    },
+    "relationEndpoint": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "entity_type",
+        "entity_revision_id"
+      ],
+      "properties": {
+        "entity_type": {
+          "enum": [
+            "FILE",
+            "FACT"
+          ]
+        },
+        "entity_revision_id": {
+          "$ref": "#/$defs/id"
+        }
+      }
+    },
+    "relationEvidence": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "file_revision_id",
+        "source_location",
+        "evidence_hash",
+        "extractor_id",
+        "extractor_version"
+      ],
+      "properties": {
+        "file_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "source_location": {
+          "$ref": "#/$defs/sourceLocation"
+        },
+        "evidence_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "extractor_id": {
+          "$ref": "#/$defs/id"
+        },
+        "extractor_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        }
+      }
+    },
+    "relation": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workspace_relation_id",
+        "relation_revision_id",
+        "relation_type",
+        "source",
+        "target",
+        "direction",
+        "attributes",
+        "evidence_refs",
+        "extraction_method",
+        "extractor_id",
+        "extractor_version",
+        "certainty",
+        "evidence_role"
+      ],
+      "properties": {
+        "workspace_relation_id": {
+          "$ref": "#/$defs/id"
+        },
+        "relation_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "relation_type": {
+          "enum": [
+            "CONTAINS",
+            "DECLARES",
+            "IMPORTS",
+            "DEPENDS_ON",
+            "CALLS",
+            "IMPLEMENTS",
+            "CONFIGURES",
+            "EXPOSES_ROUTE",
+            "HANDLES_EVENT",
+            "READS_FROM",
+            "WRITES_TO",
+            "TESTS",
+            "VALIDATES",
+            "REFERENCES"
+          ]
+        },
+        "source": {
+          "$ref": "#/$defs/relationEndpoint"
+        },
+        "target": {
+          "$ref": "#/$defs/relationEndpoint"
+        },
+        "direction": {
+          "enum": [
+            "DIRECTED",
+            "UNDIRECTED"
+          ]
+        },
+        "attributes": {
+          "type": "object",
+          "additionalProperties": {
+            "$ref": "#/$defs/jsonValue"
+          }
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relationEvidence"
+          },
+          "minItems": 1,
+          "maxItems": 100
+        },
+        "extraction_method": {
+          "enum": [
+            "PARSER_EXACT",
+            "AST_DERIVED",
+            "MANIFEST_DECLARED",
+            "TEXT_PATTERN",
+            "HEURISTIC",
+            "DOCUMENTED_CLAIM"
+          ]
+        },
+        "extractor_id": {
+          "$ref": "#/$defs/id"
+        },
+        "extractor_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "certainty": {
+          "enum": [
+            "EXACT",
+            "DERIVED",
+            "HEURISTIC",
+            "UNRESOLVED"
+          ]
+        },
+        "evidence_role": {
+          "enum": [
+            "CANONICAL_EVIDENCE",
+            "SIGNAL_ONLY",
+            "UNRESOLVED"
+          ]
+        }
+      }
+    },
+    "contentReference": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "content_ref_id",
+        "file_revision_id",
+        "content_hash",
+        "content_kind",
+        "media_type",
+        "encoding",
+        "size_bytes",
+        "retrieval_ref",
+        "sensitivity_class",
+        "availability_state",
+        "scope_type"
+      ],
+      "properties": {
+        "content_ref_id": {
+          "$ref": "#/$defs/id"
+        },
+        "file_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "content_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "content_kind": {
+          "enum": [
+            "SOURCE_CODE",
+            "MARKDOWN",
+            "CSV",
+            "JSON",
+            "YAML",
+            "TOML",
+            "XML",
+            "SCRIPT",
+            "MANIFEST",
+            "CONFIGURATION",
+            "BINARY",
+            "UNKNOWN"
+          ]
+        },
+        "media_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 512
+        },
+        "encoding": {
+          "enum": [
+            "UTF8",
+            "UTF16LE",
+            "BINARY",
+            "UNKNOWN"
+          ]
+        },
+        "size_bytes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "retrieval_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 8192
+        },
+        "sensitivity_class": {
+          "enum": [
+            "NORMAL",
+            "SENSITIVE",
+            "SECRET",
+            "CREDENTIAL_LIKE",
+            "OWNER_RESTRICTED"
+          ]
+        },
+        "availability_state": {
+          "enum": [
+            "AVAILABLE",
+            "METADATA_ONLY",
+            "RESTRICTED",
+            "UNREADABLE",
+            "BINARY",
+            "MISSING"
+          ]
+        },
+        "scope_type": {
+          "enum": [
+            "FULL_FILE",
+            "BYTE_RANGE",
+            "LINE_RANGE",
+            "NORMALIZED_FRAGMENT"
+          ]
+        }
+      }
+    },
+    "snapshot": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "files",
+        "facts",
+        "relations",
+        "content_references"
+      ],
+      "properties": {
+        "files": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        },
+        "facts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fact"
+          }
+        },
+        "relations": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relation"
+          }
+        },
+        "content_references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contentReference"
+          }
+        }
+      }
+    },
+    "fileDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "added",
+        "modified",
+        "deleted",
+        "renamed_or_moved"
+      ],
+      "properties": {
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/file"
+          }
+        },
+        "modified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "before_file_revision_id",
+              "after"
+            ],
+            "properties": {
+              "before_file_revision_id": {
+                "$ref": "#/$defs/id"
+              },
+              "after": {
+                "$ref": "#/$defs/file"
+              }
+            }
+          }
+        },
+        "deleted": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "workspace_file_id",
+              "file_revision_id",
+              "relative_path"
+            ],
+            "properties": {
+              "workspace_file_id": {
+                "$ref": "#/$defs/id"
+              },
+              "file_revision_id": {
+                "$ref": "#/$defs/id"
+              },
+              "relative_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8192
+              }
+            }
+          }
+        },
+        "renamed_or_moved": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "workspace_file_id",
+              "from_file_revision_id",
+              "from_relative_path",
+              "to"
+            ],
+            "properties": {
+              "workspace_file_id": {
+                "$ref": "#/$defs/id"
+              },
+              "from_file_revision_id": {
+                "$ref": "#/$defs/id"
+              },
+              "from_relative_path": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 8192
+              },
+              "to": {
+                "$ref": "#/$defs/file"
+              }
+            }
+          }
+        }
+      }
+    },
+    "factDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "added",
+        "modified",
+        "removed",
+        "lineage_changed"
+      ],
+      "properties": {
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/fact"
+          }
+        },
+        "modified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "before_fact_revision_id",
+              "after"
+            ],
+            "properties": {
+              "before_fact_revision_id": {
+                "$ref": "#/$defs/id"
+              },
+              "after": {
+                "$ref": "#/$defs/fact"
+              }
+            }
+          }
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "workspace_fact_id",
+              "fact_revision_id"
+            ],
+            "properties": {
+              "workspace_fact_id": {
+                "$ref": "#/$defs/id"
+              },
+              "fact_revision_id": {
+                "$ref": "#/$defs/id"
+              }
+            }
+          }
+        },
+        "lineage_changed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "workspace_fact_id",
+              "from_fact_revision_id",
+              "to_fact_revision_id",
+              "reason"
+            ],
+            "properties": {
+              "workspace_fact_id": {
+                "$ref": "#/$defs/id"
+              },
+              "from_fact_revision_id": {
+                "$ref": "#/$defs/id"
+              },
+              "to_fact_revision_id": {
+                "$ref": "#/$defs/id"
+              },
+              "reason": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 2048
+              }
+            }
+          }
+        }
+      }
+    },
+    "relationDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "added",
+        "modified",
+        "removed"
+      ],
+      "properties": {
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/relation"
+          }
+        },
+        "modified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "before_relation_revision_id",
+              "after"
+            ],
+            "properties": {
+              "before_relation_revision_id": {
+                "$ref": "#/$defs/id"
+              },
+              "after": {
+                "$ref": "#/$defs/relation"
+              }
+            }
+          }
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "workspace_relation_id",
+              "relation_revision_id"
+            ],
+            "properties": {
+              "workspace_relation_id": {
+                "$ref": "#/$defs/id"
+              },
+              "relation_revision_id": {
+                "$ref": "#/$defs/id"
+              }
+            }
+          }
+        }
+      }
+    },
+    "contentReferenceDelta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "added",
+        "modified",
+        "removed",
+        "sensitivity_changed"
+      ],
+      "properties": {
+        "added": {
+          "type": "array",
+          "items": {
+            "$ref": "#/$defs/contentReference"
+          }
+        },
+        "modified": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "before_content_ref_id",
+              "after"
+            ],
+            "properties": {
+              "before_content_ref_id": {
+                "$ref": "#/$defs/id"
+              },
+              "after": {
+                "$ref": "#/$defs/contentReference"
+              }
+            }
+          }
+        },
+        "removed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "content_ref_id",
+              "file_revision_id"
+            ],
+            "properties": {
+              "content_ref_id": {
+                "$ref": "#/$defs/id"
+              },
+              "file_revision_id": {
+                "$ref": "#/$defs/id"
+              }
+            }
+          }
+        },
+        "sensitivity_changed": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "content_ref_id",
+              "from",
+              "to"
+            ],
+            "properties": {
+              "content_ref_id": {
+                "$ref": "#/$defs/id"
+              },
+              "from": {
+                "enum": [
+                  "NORMAL",
+                  "SENSITIVE",
+                  "SECRET",
+                  "CREDENTIAL_LIKE",
+                  "OWNER_RESTRICTED"
+                ]
+              },
+              "to": {
+                "enum": [
+                  "NORMAL",
+                  "SENSITIVE",
+                  "SECRET",
+                  "CREDENTIAL_LIKE",
+                  "OWNER_RESTRICTED"
+                ]
+              }
+            }
+          }
+        }
+      }
+    },
+    "delta": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "delta_id",
+        "from_workspace_revision_id",
+        "to_workspace_revision_id",
+        "delta_schema_version",
+        "comparison_engine_version",
+        "generated_at",
+        "files",
+        "facts",
+        "relations",
+        "content_references"
+      ],
+      "properties": {
+        "delta_id": {
+          "$ref": "#/$defs/id"
+        },
+        "from_workspace_revision_id": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "to_workspace_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "delta_schema_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "comparison_engine_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "files": {
+          "$ref": "#/$defs/fileDelta"
+        },
+        "facts": {
+          "$ref": "#/$defs/factDelta"
+        },
+        "relations": {
+          "$ref": "#/$defs/relationDelta"
+        },
+        "content_references": {
+          "$ref": "#/$defs/contentReferenceDelta"
+        }
+      }
+    },
+    "coverage": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "total_discovered_files",
+        "metadata_indexed_files",
+        "fully_parsed_files",
+        "partially_parsed_files",
+        "metadata_only_files",
+        "restricted_files",
+        "unsupported_files",
+        "failed_files",
+        "fact_count_by_type",
+        "relation_count_by_type",
+        "parser_coverage_by_language"
+      ],
+      "properties": {
+        "total_discovered_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "metadata_indexed_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fully_parsed_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "partially_parsed_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "metadata_only_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "restricted_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "unsupported_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "failed_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fact_count_by_type": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "relation_count_by_type": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "integer",
+            "minimum": 0
+          }
+        },
+        "parser_coverage_by_language": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "object",
+            "additionalProperties": false,
+            "required": [
+              "discovered_files",
+              "parsed_files",
+              "partial_files",
+              "unsupported_files"
+            ],
+            "properties": {
+              "discovered_files": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "parsed_files": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "partial_files": {
+                "type": "integer",
+                "minimum": 0
+              },
+              "unsupported_files": {
+                "type": "integer",
+                "minimum": 0
+              }
+            }
+          }
+        }
+      }
+    },
+    "failure": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "failure_id",
+        "stage",
+        "failure_type",
+        "error_code",
+        "sanitized_message",
+        "occurred_at",
+        "recoverability",
+        "impact"
+      ],
+      "properties": {
+        "failure_id": {
+          "$ref": "#/$defs/id"
+        },
+        "file_revision_id": {
+          "$ref": "#/$defs/id"
+        },
+        "stage": {
+          "enum": [
+            "DISCOVERY",
+            "METADATA",
+            "CONTENT_READ",
+            "DECODING",
+            "PARSING",
+            "FACT_EXTRACTION",
+            "RELATION_RESOLUTION",
+            "HASHING",
+            "CONTRACT_ASSEMBLY"
+          ]
+        },
+        "failure_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160
+        },
+        "error_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 160,
+          "pattern": "^[A-Z0-9_:-]+$"
+        },
+        "sanitized_message": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4096
+        },
+        "extractor_id": {
+          "$ref": "#/$defs/id"
+        },
+        "extractor_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 80
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "recoverability": {
+          "enum": [
+            "RETRYABLE",
+            "REQUIRES_OWNER_PERMISSION",
+            "REQUIRES_PARSER_SUPPORT",
+            "PERMANENT_FOR_THIS_REVISION"
+          ]
+        },
+        "impact": {
+          "enum": [
+            "LOCAL",
+            "CONTEXT_DEGRADING",
+            "REVISION_INCOMPLETE",
+            "CONTRACT_BLOCKING"
+          ]
+        }
+      }
+    },
+    "integrity": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "workspace_tree_fingerprint",
+        "canonical_payload_hash",
+        "file_count",
+        "fact_count",
+        "relation_count",
+        "content_reference_count"
+      ],
+      "properties": {
+        "workspace_tree_fingerprint": {
+          "$ref": "#/$defs/sha256"
+        },
+        "canonical_payload_hash": {
+          "$ref": "#/$defs/sha256"
+        },
+        "file_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "fact_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "relation_count": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "content_reference_count": {
+          "type": "integer",
+          "minimum": 0
+        }
+      }
+    }
+  }
+}

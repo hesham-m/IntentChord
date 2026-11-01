@@ -1,0 +1,18 @@
+using System.Runtime.InteropServices;
+namespace IntentChord.UsnAuthorityService;
+internal static class Program
+{
+    private static readonly ManualResetEventSlim Stop = new(false); private static CancellationTokenSource? _shutdown; private static PipeAuthorityServer? _server;
+    internal static int Main(string[] args)
+    {
+        try { var config = AuthorityConfig.Load(Value(args, "--config"), Value(args, "--pipe-name"), Value(args, "--allowed-client-sid")); _server = new PipeAuthorityServer(config); if (args.Contains("--console", StringComparer.OrdinalIgnoreCase)) return RunConsole(config, args.Contains("--once", StringComparer.OrdinalIgnoreCase)); if (args.Contains("--service", StringComparer.OrdinalIgnoreCase)) return RunAsService(); Console.Error.WriteLine("Specify --service or --console."); return 64; } catch (Exception ex) { Console.Error.WriteLine(ex.Message); return 65; }
+    }
+    private static int RunConsole(AuthorityConfig config, bool once) { using var shutdown = new CancellationTokenSource(); _shutdown = shutdown; Console.CancelKeyPress += (_, e) => { e.Cancel = true; shutdown.Cancel(); }; Console.WriteLine($"PIPE_READY:{config.PipeName}"); try { _server!.RunAsync(shutdown.Token, once).GetAwaiter().GetResult(); return 0; } catch (OperationCanceledException) { return 0; } catch (Exception ex) { Console.Error.WriteLine($"USN_AUTHORITY_CONSOLE_FAILED:{ex.GetType().Name}"); return 66; } }
+    private static int RunAsService() => StartServiceCtrlDispatcher(new[] { new SERVICE_TABLE_ENTRY { lpServiceName = "IntentChordUsnAuthority", lpServiceProc = ServiceMain }, new SERVICE_TABLE_ENTRY() }) ? 0 : Marshal.GetLastWin32Error();
+    private static void ServiceMain(uint _, IntPtr __) { _shutdown = new CancellationTokenSource(); var handle = RegisterServiceCtrlHandlerEx("IntentChordUsnAuthority", ControlHandler, IntPtr.Zero); SetState(handle, 2); Task.Run(async () => { try { await _server!.RunAsync(_shutdown.Token, false); } finally { Stop.Set(); } }); SetState(handle, 4); Stop.Wait(); SetState(handle, 1); }
+    private static uint ControlHandler(uint control, uint _, IntPtr __, IntPtr ___) { if (control is 1 or 5) _shutdown?.Cancel(); return 0; }
+    private static void SetState(IntPtr handle, uint state) { if (handle != IntPtr.Zero) { var status = new SERVICE_STATUS { dwServiceType = 0x10, dwCurrentState = state, dwControlsAccepted = 1 }; SetServiceStatus(handle, ref status); } }
+    private static string? Value(string[] args, string key) { var i = Array.FindIndex(args, a => a.Equals(key, StringComparison.OrdinalIgnoreCase)); return i >= 0 && i + 1 < args.Length ? args[i + 1] : null; }
+    [StructLayout(LayoutKind.Sequential)] private struct SERVICE_TABLE_ENTRY { public string? lpServiceName; public ServiceMainDelegate? lpServiceProc; } private delegate void ServiceMainDelegate(uint argc, IntPtr argv); private delegate uint HandlerEx(uint control, uint eventType, IntPtr eventData, IntPtr context); [StructLayout(LayoutKind.Sequential)] private struct SERVICE_STATUS { public uint dwServiceType, dwCurrentState, dwControlsAccepted, dwWin32ExitCode, dwServiceSpecificExitCode, dwCheckPoint, dwWaitHint; }
+    [DllImport("advapi32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool StartServiceCtrlDispatcher([In] SERVICE_TABLE_ENTRY[] table); [DllImport("advapi32.dll", CharSet = CharSet.Unicode, SetLastError = true)] private static extern IntPtr RegisterServiceCtrlHandlerEx(string name, HandlerEx handler, IntPtr context); [DllImport("advapi32.dll", SetLastError = true)] [return: MarshalAs(UnmanagedType.Bool)] private static extern bool SetServiceStatus(IntPtr handle, ref SERVICE_STATUS status);
+}

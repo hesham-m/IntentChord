@@ -1,0 +1,64 @@
+/* IntentChord Phase 2 Design Tokens (Non-disruptive Foundation) */
+
+:root {
+  --ic-bg-canvas: #0B0F17;
+  --ic-bg-panel: #111827;
+  --ic-bg-surface: #1E293B;
+  --ic-bg-surface-elevated: #334155;
+  --ic-bg-surface-active: rgba(0, 242, 254, 0.05);
+  --ic-bg-input: #020617;
+
+  --ic-border-subtle: #1E293B;
+  --ic-border-medium: #334155;
+  --ic-border-strong: #475569;
+
+  --ic-brand-cyan: #00F2FE;
+  --ic-brand-cyan-glow: rgba(0, 242, 254, 0.15);
+  --ic-brand-royal: #3B82F6;
+  --ic-brand-gold: #F59E0B;
+
+  --ic-status-pass: #10B981;
+  --ic-status-pass-bg: rgba(16, 185, 129, 0.1);
+  --ic-status-violation: #EF4444;
+  --ic-status-violation-bg: rgba(239, 68, 68, 0.1);
+  --ic-status-evidence-req: #F59E0B;
+  --ic-status-evidence-req-bg: rgba(245, 158, 11, 0.1);
+
+  --ic-text-primary: #F8FAFC;
+  --ic-text-secondary: #94A3B8;
+  --ic-text-muted: #64748B;
+
+  --ic-font-sans-ar: 'Cairo', system-ui, -apple-system, sans-serif;
+  --ic-font-heading-ar: 'Tajawal', system-ui, -apple-system, sans-serif;
+  --ic-font-sans-en: 'Inter', system-ui, -apple-system, sans-serif;
+  --ic-font-mono: 'JetBrains Mono', Consolas, monospace;
+}
+
+[data-theme="light"] {
+  --ic-bg-canvas: #F8FAFC;
+  --ic-bg-panel: #FFFFFF;
+  --ic-bg-surface: #F1F5F9;
+  --ic-bg-surface-elevated: #E2E8F0;
+  --ic-bg-surface-active: rgba(2, 132, 199, 0.05);
+  --ic-bg-input: #FFFFFF;
+
+  --ic-border-subtle: #E2E8F0;
+  --ic-border-medium: #CBD5E1;
+  --ic-border-strong: #94A3B8;
+
+  --ic-brand-cyan: #0284C7;
+  --ic-brand-cyan-glow: rgba(2, 132, 199, 0.15);
+  --ic-brand-royal: #1D4ED8;
+  --ic-brand-gold: #D97706;
+
+  --ic-status-pass: #059669;
+  --ic-status-pass-bg: rgba(5, 150, 105, 0.1);
+  --ic-status-violation: #DC2626;
+  --ic-status-violation-bg: rgba(220, 38, 38, 0.1);
+  --ic-status-evidence-req: #D97706;
+  --ic-status-evidence-req-bg: rgba(217, 119, 6, 0.1);
+
+  --ic-text-primary: #0F172A;
+  --ic-text-secondary: #475569;
+  --ic-text-muted: #64748B;
+}

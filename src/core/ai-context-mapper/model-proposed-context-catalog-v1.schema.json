@@ -1,0 +1,62 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "intentchord://schemas/model-proposed-context-catalog/v1",
+  "title": "IntentChord Model Proposed Context Catalog V1",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version", "catalog_summary", "contexts", "relationships", "unmapped_entries", "global_unknowns", "warnings"],
+  "properties": {
+    "schema_version": { "const": "intentchord.model-proposed-context-catalog.v1" },
+    "catalog_summary": { "type": "string", "minLength": 1, "maxLength": 4000 },
+    "contexts": {
+      "type": "array", "minItems": 1,
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["context_id", "display_name", "context_kind", "summary", "responsibilities", "workspace_ids", "evidence_entry_ids", "interfaces", "unknowns", "confidence", "rationale"],
+        "properties": {
+          "context_id": { "type": "string", "pattern": "^ctx_[a-z0-9][a-z0-9_-]{2,63}$" },
+          "display_name": { "type": "string", "minLength": 1, "maxLength": 160 },
+          "context_kind": { "enum": ["application", "service", "library", "module", "data_store", "integration", "infrastructure", "workflow", "policy", "test_suite", "documentation", "cross_cutting", "unknown"] },
+          "summary": { "type": "string", "minLength": 1, "maxLength": 3000 },
+          "responsibilities": { "type": "array", "minItems": 1, "maxItems": 30, "items": { "type": "string", "minLength": 1, "maxLength": 500 }, "uniqueItems": true },
+          "workspace_ids": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1, "maxLength": 128 }, "uniqueItems": true },
+          "evidence_entry_ids": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1, "maxLength": 256 }, "uniqueItems": true },
+          "interfaces": { "type": "array", "maxItems": 50, "items": { "type": "string", "minLength": 1, "maxLength": 500 }, "uniqueItems": true },
+          "unknowns": { "type": "array", "maxItems": 30, "items": { "type": "string", "minLength": 1, "maxLength": 700 }, "uniqueItems": true },
+          "confidence": { "enum": ["high", "medium", "low"] },
+          "rationale": { "type": "string", "minLength": 1, "maxLength": 2000 }
+        }
+      }
+    },
+    "relationships": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["relationship_id", "from_context_id", "to_context_id", "relationship_type", "evidence_entry_ids", "confidence", "rationale"],
+        "properties": {
+          "relationship_id": { "type": "string", "pattern": "^rel_[a-z0-9][a-z0-9_-]{2,63}$" },
+          "from_context_id": { "type": "string", "pattern": "^ctx_[a-z0-9][a-z0-9_-]{2,63}$" },
+          "to_context_id": { "type": "string", "pattern": "^ctx_[a-z0-9][a-z0-9_-]{2,63}$" },
+          "relationship_type": { "enum": ["contains", "depends_on", "calls", "reads_from", "writes_to", "implements", "tests", "documents", "governs", "integrates_with", "shares_contract_with", "unknown"] },
+          "evidence_entry_ids": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1, "maxLength": 256 }, "uniqueItems": true },
+          "confidence": { "enum": ["high", "medium", "low"] },
+          "rationale": { "type": "string", "minLength": 1, "maxLength": 1500 }
+        }
+      }
+    },
+    "unmapped_entries": {
+      "type": "array",
+      "items": {
+        "type": "object", "additionalProperties": false,
+        "required": ["entry_id", "reason_code", "explanation"],
+        "properties": {
+          "entry_id": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "reason_code": { "enum": ["insufficient_evidence", "ambiguous", "technical_noise", "generated_or_vendor", "out_of_mapper_scope"] },
+          "explanation": { "type": "string", "minLength": 1, "maxLength": 1000 }
+        }
+      }
+    },
+    "global_unknowns": { "type": "array", "maxItems": 100, "items": { "type": "string", "minLength": 1, "maxLength": 1000 }, "uniqueItems": true },
+    "warnings": { "type": "array", "maxItems": 100, "items": { "type": "string", "minLength": 1, "maxLength": 1000 }, "uniqueItems": true }
+  }
+}

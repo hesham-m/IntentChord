@@ -1,0 +1,344 @@
+{
+  "contract_type": "canonical_workspace_index",
+  "contract_version": "1.0.0",
+  "contract_id": "cwi_7945f6ad2f840296360d16a98fd0f74ff8f0f7a769447fce49ad9f77c79009f7",
+  "contract_status": "COMPLETE",
+  "workspace": {
+    "workspace_instance_id": "wsi_sample_contract_v1",
+    "workspace_revision_id": "wsr_32c462353ce1f75709bce538498149fbc380062031c17ce1e573a9f7ab68aa47",
+    "previous_revision_id": null,
+    "source_binding_id": "sbi_ce687520c2f97c2b325a7661bc8dede7e9bf975e808d6c3eddbeedb5200089f1"
+  },
+  "source_binding": {
+    "source_binding_id": "sbi_ce687520c2f97c2b325a7661bc8dede7e9bf975e808d6c3eddbeedb5200089f1",
+    "binding_type": "FIXTURE",
+    "normalized_reference": "fixture://canonical-workspace-index-v1",
+    "metadata": {
+      "read_only": true,
+      "raw_content_embedded": false,
+      "git_required": false,
+      "sample_artifact": true
+    }
+  },
+  "generation": {
+    "indexing_session_id": "wis_sample_contract_v1",
+    "indexer_name": "intentchord-workspace-indexer",
+    "indexer_version": "1.0.0",
+    "parser_registry_version": "workspace-parser-registry/v1",
+    "relation_registry_version": "workspace-relation-registry/v1",
+    "started_at": "2026-08-02T18:00:00.000Z",
+    "completed_at": "2026-08-02T18:00:00.000Z"
+  },
+  "snapshot": {
+    "files": [
+      {
+        "workspace_file_id": "wfi_96ff566419925dcd346f06fc9f69b743795dd15044efb1f5fa30b7e279ed4a95",
+        "file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+        "relative_path": "README.md",
+        "file_name": "README.md",
+        "file_kind": "MARKDOWN",
+        "language": "markdown",
+        "size_bytes": 38,
+        "content_hash": "sha256:2b2d3c0f34db597cf7bca4894ac4bf81142813448744b9f649f1c4208d4fd87f",
+        "metadata_hash": "sha256:786120d07d734b96da148f449970742b5a7532af2ec2c9f47a4d8d6d0af781f3",
+        "encoding": "UTF8",
+        "parse_status": "PARSED",
+        "sensitivity_state": "NORMAL",
+        "coverage_stage": "RELATIONS_RESOLVED",
+        "coverage_state": "COMPLETE",
+        "content_ref_id": "wcr_c722fb3fc3eeb7e17b1ae03b89dd85522cca01a98e62c5a52f124eec04f09176",
+        "lineage_state": "NEW"
+      }
+    ],
+    "facts": [
+      {
+        "workspace_fact_id": "wfa_ea9a327bafae63b5cb227da3f7d02b011f8db834dc3199dc31796ef4d2811a43",
+        "fact_revision_id": "far_59016777a701af614d88cce51b70bd77e1f779e1f7e1279877f2b198d2c31f73",
+        "fact_type": "DOCUMENTATION",
+        "qualified_name": "README.md#heading:1:Canonical Workspace Index v1 Sample",
+        "display_name": "Canonical Workspace Index v1 Sample",
+        "attributes": {
+          "heading_level": 1
+        },
+        "source_file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+        "source_location": {
+          "line_range": {
+            "start": 1,
+            "end": 1
+          },
+          "byte_range": {
+            "start": 0,
+            "end": 37
+          },
+          "normalized_signature": "heading:1:Canonical Workspace Index v1 Sample"
+        },
+        "extraction_method": "PARSER_EXACT",
+        "extractor_id": "MARKDOWN_STRUCTURE_PARSER",
+        "extractor_version": "1.0.0",
+        "certainty": "EXACT",
+        "evidence_role": "CANONICAL_EVIDENCE",
+        "provenance": {
+          "workspace_revision_id": "wsr_32c462353ce1f75709bce538498149fbc380062031c17ce1e573a9f7ab68aa47",
+          "file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+          "file_content_hash": "sha256:2b2d3c0f34db597cf7bca4894ac4bf81142813448744b9f649f1c4208d4fd87f",
+          "source_location": {
+            "line_range": {
+              "start": 1,
+              "end": 1
+            },
+            "byte_range": {
+              "start": 0,
+              "end": 37
+            },
+            "normalized_signature": "heading:1:Canonical Workspace Index v1 Sample"
+          },
+          "extractor_id": "MARKDOWN_STRUCTURE_PARSER",
+          "extractor_version": "1.0.0",
+          "extraction_method": "PARSER_EXACT",
+          "evidence_hash": "sha256:cef5d5f3994b4daa77ecce6e6854a0c62b3cfd62813b58cb6b33a70469d70fa7"
+        }
+      }
+    ],
+    "relations": [
+      {
+        "workspace_relation_id": "wre_6af2cf362e38c15aeeb5b0d4dc5b61be7f0f746691f4f462372620672e7875a5",
+        "relation_revision_id": "rer_3db288a324406060270e856120f0b0cc6220bba3af9364d3a0218dcb7095f3e7",
+        "relation_type": "DECLARES",
+        "source": {
+          "entity_type": "FILE",
+          "entity_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb"
+        },
+        "target": {
+          "entity_type": "FACT",
+          "entity_revision_id": "far_59016777a701af614d88cce51b70bd77e1f779e1f7e1279877f2b198d2c31f73"
+        },
+        "direction": "DIRECTED",
+        "attributes": {},
+        "evidence_refs": [
+          {
+            "file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+            "source_location": {
+              "line_range": {
+                "start": 1,
+                "end": 1
+              },
+              "byte_range": {
+                "start": 0,
+                "end": 37
+              },
+              "normalized_signature": "heading:1:Canonical Workspace Index v1 Sample"
+            },
+            "evidence_hash": "sha256:cef5d5f3994b4daa77ecce6e6854a0c62b3cfd62813b58cb6b33a70469d70fa7",
+            "extractor_id": "MARKDOWN_STRUCTURE_PARSER",
+            "extractor_version": "1.0.0"
+          }
+        ],
+        "extraction_method": "PARSER_EXACT",
+        "extractor_id": "MARKDOWN_STRUCTURE_PARSER",
+        "extractor_version": "1.0.0",
+        "certainty": "EXACT",
+        "evidence_role": "CANONICAL_EVIDENCE"
+      }
+    ],
+    "content_references": [
+      {
+        "content_ref_id": "wcr_c722fb3fc3eeb7e17b1ae03b89dd85522cca01a98e62c5a52f124eec04f09176",
+        "file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+        "content_hash": "sha256:2b2d3c0f34db597cf7bca4894ac4bf81142813448744b9f649f1c4208d4fd87f",
+        "content_kind": "MARKDOWN",
+        "media_type": "text/markdown",
+        "encoding": "UTF8",
+        "size_bytes": 38,
+        "retrieval_ref": "fixture://canonical-workspace-index-v1/README.md",
+        "sensitivity_class": "NORMAL",
+        "availability_state": "AVAILABLE",
+        "scope_type": "FULL_FILE"
+      }
+    ]
+  },
+  "coverage": {
+    "total_discovered_files": 1,
+    "metadata_indexed_files": 1,
+    "fully_parsed_files": 1,
+    "partially_parsed_files": 0,
+    "metadata_only_files": 0,
+    "restricted_files": 0,
+    "unsupported_files": 0,
+    "failed_files": 0,
+    "fact_count_by_type": {
+      "DOCUMENTATION": 1
+    },
+    "relation_count_by_type": {
+      "DECLARES": 1
+    },
+    "parser_coverage_by_language": {
+      "markdown": {
+        "discovered_files": 1,
+        "parsed_files": 1,
+        "partial_files": 0,
+        "unsupported_files": 0
+      }
+    }
+  },
+  "failures": [],
+  "delta": {
+    "delta_id": "wid_c79088f8424aacc6a005312cf219e39310b395195f2ae94262f31d3cf4e1488d",
+    "from_workspace_revision_id": null,
+    "to_workspace_revision_id": "wsr_32c462353ce1f75709bce538498149fbc380062031c17ce1e573a9f7ab68aa47",
+    "delta_schema_version": "workspace-index-delta/v1",
+    "comparison_engine_version": "workspace-index-comparison/v1",
+    "generated_at": "2026-08-02T18:00:00.000Z",
+    "files": {
+      "added": [
+        {
+          "workspace_file_id": "wfi_96ff566419925dcd346f06fc9f69b743795dd15044efb1f5fa30b7e279ed4a95",
+          "file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+          "relative_path": "README.md",
+          "file_name": "README.md",
+          "file_kind": "MARKDOWN",
+          "language": "markdown",
+          "size_bytes": 38,
+          "content_hash": "sha256:2b2d3c0f34db597cf7bca4894ac4bf81142813448744b9f649f1c4208d4fd87f",
+          "metadata_hash": "sha256:786120d07d734b96da148f449970742b5a7532af2ec2c9f47a4d8d6d0af781f3",
+          "encoding": "UTF8",
+          "parse_status": "PARSED",
+          "sensitivity_state": "NORMAL",
+          "coverage_stage": "RELATIONS_RESOLVED",
+          "coverage_state": "COMPLETE",
+          "content_ref_id": "wcr_c722fb3fc3eeb7e17b1ae03b89dd85522cca01a98e62c5a52f124eec04f09176",
+          "lineage_state": "NEW"
+        }
+      ],
+      "modified": [],
+      "deleted": [],
+      "renamed_or_moved": []
+    },
+    "facts": {
+      "added": [
+        {
+          "workspace_fact_id": "wfa_ea9a327bafae63b5cb227da3f7d02b011f8db834dc3199dc31796ef4d2811a43",
+          "fact_revision_id": "far_59016777a701af614d88cce51b70bd77e1f779e1f7e1279877f2b198d2c31f73",
+          "fact_type": "DOCUMENTATION",
+          "qualified_name": "README.md#heading:1:Canonical Workspace Index v1 Sample",
+          "display_name": "Canonical Workspace Index v1 Sample",
+          "attributes": {
+            "heading_level": 1
+          },
+          "source_file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+          "source_location": {
+            "line_range": {
+              "start": 1,
+              "end": 1
+            },
+            "byte_range": {
+              "start": 0,
+              "end": 37
+            },
+            "normalized_signature": "heading:1:Canonical Workspace Index v1 Sample"
+          },
+          "extraction_method": "PARSER_EXACT",
+          "extractor_id": "MARKDOWN_STRUCTURE_PARSER",
+          "extractor_version": "1.0.0",
+          "certainty": "EXACT",
+          "evidence_role": "CANONICAL_EVIDENCE",
+          "provenance": {
+            "workspace_revision_id": "wsr_32c462353ce1f75709bce538498149fbc380062031c17ce1e573a9f7ab68aa47",
+            "file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+            "file_content_hash": "sha256:2b2d3c0f34db597cf7bca4894ac4bf81142813448744b9f649f1c4208d4fd87f",
+            "source_location": {
+              "line_range": {
+                "start": 1,
+                "end": 1
+              },
+              "byte_range": {
+                "start": 0,
+                "end": 37
+              },
+              "normalized_signature": "heading:1:Canonical Workspace Index v1 Sample"
+            },
+            "extractor_id": "MARKDOWN_STRUCTURE_PARSER",
+            "extractor_version": "1.0.0",
+            "extraction_method": "PARSER_EXACT",
+            "evidence_hash": "sha256:cef5d5f3994b4daa77ecce6e6854a0c62b3cfd62813b58cb6b33a70469d70fa7"
+          }
+        }
+      ],
+      "modified": [],
+      "removed": [],
+      "lineage_changed": []
+    },
+    "relations": {
+      "added": [
+        {
+          "workspace_relation_id": "wre_6af2cf362e38c15aeeb5b0d4dc5b61be7f0f746691f4f462372620672e7875a5",
+          "relation_revision_id": "rer_3db288a324406060270e856120f0b0cc6220bba3af9364d3a0218dcb7095f3e7",
+          "relation_type": "DECLARES",
+          "source": {
+            "entity_type": "FILE",
+            "entity_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb"
+          },
+          "target": {
+            "entity_type": "FACT",
+            "entity_revision_id": "far_59016777a701af614d88cce51b70bd77e1f779e1f7e1279877f2b198d2c31f73"
+          },
+          "direction": "DIRECTED",
+          "attributes": {},
+          "evidence_refs": [
+            {
+              "file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+              "source_location": {
+                "line_range": {
+                  "start": 1,
+                  "end": 1
+                },
+                "byte_range": {
+                  "start": 0,
+                  "end": 37
+                },
+                "normalized_signature": "heading:1:Canonical Workspace Index v1 Sample"
+              },
+              "evidence_hash": "sha256:cef5d5f3994b4daa77ecce6e6854a0c62b3cfd62813b58cb6b33a70469d70fa7",
+              "extractor_id": "MARKDOWN_STRUCTURE_PARSER",
+              "extractor_version": "1.0.0"
+            }
+          ],
+          "extraction_method": "PARSER_EXACT",
+          "extractor_id": "MARKDOWN_STRUCTURE_PARSER",
+          "extractor_version": "1.0.0",
+          "certainty": "EXACT",
+          "evidence_role": "CANONICAL_EVIDENCE"
+        }
+      ],
+      "modified": [],
+      "removed": []
+    },
+    "content_references": {
+      "added": [
+        {
+          "content_ref_id": "wcr_c722fb3fc3eeb7e17b1ae03b89dd85522cca01a98e62c5a52f124eec04f09176",
+          "file_revision_id": "fir_7609c67ead6ef0f8f6dfc00ba5e187bce16602acd92b473fc715091c7ed182eb",
+          "content_hash": "sha256:2b2d3c0f34db597cf7bca4894ac4bf81142813448744b9f649f1c4208d4fd87f",
+          "content_kind": "MARKDOWN",
+          "media_type": "text/markdown",
+          "encoding": "UTF8",
+          "size_bytes": 38,
+          "retrieval_ref": "fixture://canonical-workspace-index-v1/README.md",
+          "sensitivity_class": "NORMAL",
+          "availability_state": "AVAILABLE",
+          "scope_type": "FULL_FILE"
+        }
+      ],
+      "modified": [],
+      "removed": [],
+      "sensitivity_changed": []
+    }
+  },
+  "integrity": {
+    "workspace_tree_fingerprint": "sha256:86be7daf30b67a4ea491ac975083d82302436368a2a68c15588e3b91e2ea4bf6",
+    "canonical_payload_hash": "sha256:20f407b548531d69289b85d99c959a8afde9ed6d7cd78c7e00526715ce8542fb",
+    "file_count": 1,
+    "fact_count": 1,
+    "relation_count": 1,
+    "content_reference_count": 1
+  }
+}

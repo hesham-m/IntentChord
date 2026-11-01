@@ -1,0 +1,7 @@
+import { readProjectFact } from "@/server/project-truth-service";
+import { ownerReadResponse } from "@/server/responses";
+
+export async function GET(request: Request, { params }: { params: Promise<{ id: string }> }) {
+  const { id } = await params;
+  return ownerReadResponse(request, () => readProjectFact(id));
+}

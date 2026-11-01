@@ -1,0 +1,81 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "intentchord.model-context-analysis.v2",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["schema_version","analysis_outcome","catalog_summary","components","relationships","missing_evidence_requests","material_contradictions","global_unknowns","warnings"],
+  "properties": {
+    "schema_version": {"const": "intentchord.model-context-analysis.v2"},
+    "analysis_outcome": {"enum": ["ANALYSIS_FINDINGS_NO_KNOWN_BLOCKING_GAP","ANALYSIS_REQUIRES_ADDITIONAL_EVIDENCE"]},
+    "catalog_summary": {"type":"string","minLength":1,"maxLength":12000},
+    "components": {"type":"array","maxItems":1000,"items":{"$ref":"#/$defs/component"}},
+    "relationships": {"type":"array","maxItems":4000,"items":{"$ref":"#/$defs/relationship"}},
+    "missing_evidence_requests": {"type":"array","maxItems":500,"items":{"$ref":"#/$defs/missingEvidence"}},
+    "material_contradictions": {"type":"array","maxItems":500,"items":{"$ref":"#/$defs/contradiction"}},
+    "global_unknowns": {"type":"array","maxItems":1000,"items":{"type":"string","minLength":1,"maxLength":4000}},
+    "warnings": {"type":"array","maxItems":1000,"items":{"type":"string","minLength":1,"maxLength":4000}}
+  },
+  "$defs": {
+    "confidence": {"enum":["high","medium","low"]},
+    "stringArray": {"type":"array","uniqueItems":true,"maxItems":4000,"items":{"type":"string","minLength":1,"maxLength":8192}},
+    "component": {
+      "type":"object","additionalProperties":false,
+      "required":["component_id","display_name","context_kind","summary","responsibilities","workspace_ids","evidence_entry_ids","interfaces","unknowns","confidence","rationale"],
+      "properties": {
+        "component_id":{"type":"string","pattern":"^ctx_[a-z0-9][a-z0-9_-]{2,63}$"},
+        "display_name":{"type":"string","minLength":1,"maxLength":240},
+        "context_kind":{"enum":["application","service","library","module","data_store","integration","infrastructure","workflow","policy","test_suite","documentation","cross_cutting","unknown"]},
+        "summary":{"type":"string","minLength":1,"maxLength":12000},
+        "responsibilities":{"$ref":"#/$defs/stringArray"},
+        "workspace_ids":{"$ref":"#/$defs/stringArray"},
+        "evidence_entry_ids":{"$ref":"#/$defs/stringArray"},
+        "interfaces":{"$ref":"#/$defs/stringArray"},
+        "unknowns":{"$ref":"#/$defs/stringArray"},
+        "confidence":{"$ref":"#/$defs/confidence"},
+        "rationale":{"type":"string","minLength":1,"maxLength":12000}
+      }
+    },
+    "relationship": {
+      "type":"object","additionalProperties":false,
+      "required":["relationship_id","from_component_id","to_component_id","relationship_type","evidence_entry_ids","confidence","rationale"],
+      "properties": {
+        "relationship_id":{"type":"string","pattern":"^rel_[a-z0-9][a-z0-9_-]{2,63}$"},
+        "from_component_id":{"type":"string","minLength":1,"maxLength":200},
+        "to_component_id":{"type":"string","minLength":1,"maxLength":200},
+        "relationship_type":{"enum":["contains","depends_on","calls","reads_from","writes_to","implements","tests","documents","governs","integrates_with","shares_contract_with","unknown"]},
+        "evidence_entry_ids":{"$ref":"#/$defs/stringArray"},
+        "confidence":{"$ref":"#/$defs/confidence"},
+        "rationale":{"type":"string","minLength":1,"maxLength":12000}
+      }
+    },
+    "missingEvidence": {
+      "type":"object","additionalProperties":false,
+      "required":["gap_id","gap_type","affected_component_ids","affected_relationship_ids","known_evidence_entry_ids","missing_evidence_description","required_evidence_kind","blocking_reason","materiality","confidence"],
+      "properties": {
+        "gap_id":{"type":"string","pattern":"^gap_[a-z0-9][a-z0-9_-]{2,63}$"},
+        "gap_type":{"enum":["INTERNAL_SOURCE","EXTERNAL_DEPENDENCY","NON_BLOCKING_UNRESOLVED","OPTIONAL_CONTEXT_GAP"]},
+        "affected_component_ids":{"$ref":"#/$defs/stringArray"},
+        "affected_relationship_ids":{"$ref":"#/$defs/stringArray"},
+        "known_evidence_entry_ids":{"$ref":"#/$defs/stringArray"},
+        "missing_evidence_description":{"type":"string","minLength":1,"maxLength":12000},
+        "required_evidence_kind":{"type":"string","minLength":1,"maxLength":2000},
+        "source_hint":{"type":"string","minLength":1,"maxLength":1000},
+        "blocking_reason":{"type":"string","minLength":1,"maxLength":12000},
+        "materiality":{"enum":["BLOCKING","NON_BLOCKING"]},
+        "confidence":{"$ref":"#/$defs/confidence"}
+      }
+    },
+    "contradiction": {
+      "type":"object","additionalProperties":false,
+      "required":["contradiction_id","affected_component_ids","affected_relationship_ids","evidence_entry_ids","summary","materiality"],
+      "properties": {
+        "contradiction_id":{"type":"string","pattern":"^ctr_[a-z0-9][a-z0-9_-]{2,63}$"},
+        "affected_component_ids":{"$ref":"#/$defs/stringArray"},
+        "affected_relationship_ids":{"$ref":"#/$defs/stringArray"},
+        "evidence_entry_ids":{"$ref":"#/$defs/stringArray"},
+        "summary":{"type":"string","minLength":1,"maxLength":12000},
+        "materiality":{"enum":["BLOCKING","NON_BLOCKING"]}
+      }
+    }
+  }
+}
